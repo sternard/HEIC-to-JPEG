@@ -1,0 +1,4 @@
+{
+  "displayName": "HEIC to JPEG",
+  "launchScript": "scripts/run-app.sh"
+}
