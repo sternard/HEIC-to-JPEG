@@ -34,9 +34,12 @@ final class HEICFileLocatorTests: XCTestCase {
         FileManager.default.createFile(atPath: secondHEIC.path, contents: Data())
         FileManager.default.createFile(atPath: ignoredJPEG.path, contents: Data())
 
-        let results = Set(HEICFileLocator.heicFiles(in: temporaryDirectory))
+        let results = Set(
+            HEICFileLocator.heicFiles(in: temporaryDirectory).map { $0.resolvingSymlinksInPath() }
+        )
+        let expected = Set([firstHEIC, secondHEIC].map { $0.resolvingSymlinksInPath() })
 
-        XCTAssertEqual(results, Set([firstHEIC, secondHEIC]))
+        XCTAssertEqual(results, expected)
     }
 
     func testAvailableJPEGURLAvoidsExistingFiles() throws {
